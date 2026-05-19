@@ -4,6 +4,7 @@ import zmq
 import rclpy
 from rclpy.node import Node
 from rclpy.time import Time
+import random
 from nav_msgs.msg import Odometry
 from geometry_msgs.msg import Twist
 from geometry_msgs.msg import TransformStamped
@@ -83,6 +84,7 @@ class CoppeliasimOdom(Node):
         cmd_vel_topic = self.declare_parameter('cmd_vel_topic', CMD_VEL_TOPIC).value
         robot_path = self.declare_parameter('robot_path', ROBOT_PATH).value
         lidar_path = self.declare_parameter('lidar_path', LIDAR_PATH).value
+        self.publish_tf = self.declare_parameter('publish_tf', True).value
 
         self.odom_pub = self.create_publisher(Odometry, odom_topic, 10)
         self.imu_pub = self.create_publisher(Imu, imu_topic, 10)
@@ -117,6 +119,8 @@ class CoppeliasimOdom(Node):
         self.last_raw_yaw = self.yaw_from_quaternion(init_quat) + self.yaw_offset
         self.current_yaw = self.last_raw_yaw
 
+        self.current_yaw = self.last_raw_yaw
+
         self.create_timer(0.05, self.publish_data)
         self.get_logger().info('Odometria CoppeliaSim attiva. SLAM pronto.')
 
@@ -141,7 +145,7 @@ class CoppeliasimOdom(Node):
 
     def publish_static_lidar_tf(self, pos, quat):
         t = TransformStamped()
-        t.header.stamp = Time().to_msg()
+        t.header.stamp = rclpy.time.Time(seconds=0).to_msg()
         t.header.frame_id = self.base_frame
         t.child_frame_id = self.lidar_frame
         t.transform.translation.x = pos[0]
@@ -186,7 +190,7 @@ class CoppeliasimOdom(Node):
         self.last_raw_yaw = raw_yaw
         self.current_yaw = yaw
 
-        now_msg = rclpy.time.Time(seconds=sim_time).to_msg()
+        now_msg = self.get_clock().now().to_msg()
 
         # Pubblica CLOCK
         clock_msg = Clock()
@@ -204,7 +208,7 @@ class CoppeliasimOdom(Node):
         imu.orientation.w = ros_quat[3]
         self.imu_pub.publish(imu)
 
-        # Odometry
+        # Odometry (Ground Truth Perfetta)
         odom = Odometry()
         odom.header.stamp = now_msg
         odom.header.frame_id = self.odom_frame
@@ -222,18 +226,19 @@ class CoppeliasimOdom(Node):
         self.odom_pub.publish(odom)
 
         # TF
-        tf = TransformStamped()
-        tf.header.stamp = now_msg
-        tf.header.frame_id = self.odom_frame
-        tf.child_frame_id = self.base_frame
-        tf.transform.translation.x = pos[0]
-        tf.transform.translation.y = pos[1]
-        tf.transform.translation.z = pos[2]
-        tf.transform.rotation.x = ros_quat[0]
-        tf.transform.rotation.y = ros_quat[1]
-        tf.transform.rotation.z = ros_quat[2]
-        tf.transform.rotation.w = ros_quat[3]
-        self.tf_bcast.sendTransform(tf)
+        if self.publish_tf:
+            tf = TransformStamped()
+            tf.header.stamp = now_msg
+            tf.header.frame_id = self.odom_frame
+            tf.child_frame_id = self.base_frame
+            tf.transform.translation.x = pos[0]
+            tf.transform.translation.y = pos[1]
+            tf.transform.translation.z = pos[2]
+            tf.transform.rotation.x = ros_quat[0]
+            tf.transform.rotation.y = ros_quat[1]
+            tf.transform.rotation.z = ros_quat[2]
+            tf.transform.rotation.w = ros_quat[3]
+            self.tf_bcast.sendTransform(tf)
 
 
 def main(args=None):

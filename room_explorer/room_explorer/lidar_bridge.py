@@ -59,7 +59,7 @@ class LidarBridge(Node):
         angle_increment = (angle_max - angle_min) / (n - 1)
 
         msg = LaserScan()
-        msg.header.stamp    = rclpy.time.Time(seconds=sim_time).to_msg()
+        msg.header.stamp    = self.get_clock().now().to_msg()
         msg.header.frame_id = self.lidar_frame
         msg.angle_min       = angle_min
         msg.angle_max       = angle_max

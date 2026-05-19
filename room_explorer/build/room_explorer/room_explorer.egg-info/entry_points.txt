@@ -1,0 +1,11 @@
+[console_scripts]
+connect = room_explorer.connect:main
+coppeliasim_odom = room_explorer.coppeliasim_odom:main
+discover = room_explorer.discover:main
+display_battery = room_explorer.display_battery:main
+h264_decoder = room_explorer.decompress_h264:main
+lidar_bridge = room_explorer.lidar_bridge:main
+play_audio = room_explorer.play_audio:main
+play_opus = room_explorer.play_audio_opus:main
+robomaster_driver = room_explorer.robomaster_driver:main
+room_explorer_node = room_explorer.room_explorer_node:main
