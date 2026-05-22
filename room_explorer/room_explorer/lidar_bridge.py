@@ -52,7 +52,7 @@ class LidarBridge(Node):
             return
 
         ranges = list(values)
-        ranges.reverse() # Inverte l'array per correggere eventuali scan specchiati
+        #ranges.reverse()                  
 
         angle_min       = math.radians(ANGLE_MIN_DEG)
         angle_max       = math.radians(ANGLE_MAX_DEG)

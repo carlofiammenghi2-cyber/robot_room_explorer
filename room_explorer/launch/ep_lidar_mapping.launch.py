@@ -1,6 +1,6 @@
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
-from launch.substitutions import LaunchConfiguration
+from launch.substitutions import LaunchConfiguration, PythonExpression
 from launch_ros.actions import Node, SetParameter
 from launch.launch_description_sources import FrontendLaunchDescriptionSource
 import os
@@ -20,6 +20,7 @@ def generate_launch_description():
     lidar_yaw_offset = LaunchConfiguration('lidar_yaw_offset')
     cmd_yaw_rate_scale = LaunchConfiguration('cmd_yaw_rate_scale')
     raw_yaw_rate_threshold = LaunchConfiguration('raw_yaw_rate_threshold')
+    sync = LaunchConfiguration('sync')
 
     ep_tof_launch = IncludeLaunchDescription(
         FrontendLaunchDescriptionSource(
@@ -43,7 +44,7 @@ def generate_launch_description():
 
     slam_node = Node(
         package='slam_toolbox',
-        executable='async_slam_toolbox_node',
+        executable=PythonExpression(["'sync_slam_toolbox_node' if '", sync, "' == 'true' else 'async_slam_toolbox_node'"]),
         name='slam_toolbox',
         output='log',
         parameters=[
@@ -110,6 +111,7 @@ def generate_launch_description():
         DeclareLaunchArgument('lidar_yaw_offset', default_value='0.0'),
         DeclareLaunchArgument('cmd_yaw_rate_scale', default_value='1.0'),
         DeclareLaunchArgument('raw_yaw_rate_threshold', default_value='0.02'),
+        DeclareLaunchArgument('sync', default_value='false'),
         ep_tof_launch,
         coppeliasim_odom_node,
         lidar_bridge_node,

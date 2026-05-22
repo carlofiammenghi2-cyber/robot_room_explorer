@@ -42,8 +42,8 @@ class SubsumptionExplorerNode(Node):
         # ── SOGLIE MOLTO CONSERVATIVE PER STABILITÀ ───────────────────────────
         self.STOP_DIST   = 0.4
         self.CLEAR_DIST  = 0.6
-        self.TURN_SPEED  = 0.15  # Molto lento
-        self.FWD_SPEED   = 0.10  # Molto lento per test
+        self.TURN_SPEED  = 0.30  # Velocità raddoppiata per test dinamici (x2)
+        self.FWD_SPEED   = 0.20  # Velocità raddoppiata per test dinamici (x2)
         self.WAYPOINT_TOLERANCE = 0.4 # Più tolleranza per i punti
 
         self.create_timer(0.1, self.run_logic)
@@ -101,16 +101,19 @@ class SubsumptionExplorerNode(Node):
             return
 
         msg = Twist()
-        d_front = self.distances[2] # frontale
+        d_front = self.distances[2] if self.distances[2] is not None else 10.0
 
-        if self.global_path and self.state == 'IDLE':
-            self.state = 'FOLLOW_PATH'
+        if self.state == 'IDLE':
+            if self.global_path:
+                self.state = 'FOLLOW_PATH'
+            else:
+                self.state = 'WANDER'
 
         if self.state == 'FOLLOW_PATH':
             if d_front <= self.STOP_DIST:
                 self.state = 'TURN'
-                d_right = self.distances[1]
-                d_left  = self.distances[3]
+                d_right = self.distances[1] if self.distances[1] is not None else 10.0
+                d_left  = self.distances[3] if self.distances[3] is not None else 10.0
                 self.turn_dir = -self.TURN_SPEED if d_right >= d_left else self.TURN_SPEED
                 self.turn_start = time.time()
                 self.get_logger().warn('OSTACOLO! Entro in modalità evitamento.')
@@ -123,14 +126,39 @@ class SubsumptionExplorerNode(Node):
                     self.state = 'IDLE'
                     self.get_logger().info('Percorso completato.')
 
+        elif self.state == 'WANDER':
+            # Recuperiamo le distanze dei 3 sensori (destra, frontale, sinistra)
+            d_right = self.distances[1] if self.distances[1] is not None else 10.0
+            d_left  = self.distances[3] if self.distances[3] is not None else 10.0
+
+            # Ignoriamo valori inferiori a 0.05 (rumore o letture non valide)
+            if d_right < 0.05: d_right = 10.0
+            if d_front < 0.05: d_front = 10.0
+            if d_left < 0.05: d_left = 10.0
+
+            obs_thresh = 0.5  # Soglia ostacolo a 50cm
+
+            if d_front <= obs_thresh or d_right <= obs_thresh or d_left <= obs_thresh:
+                # Ostacolo rilevato! Giriamo sul posto verso la direzione con piu' spazio
+                if d_right >= d_left:
+                    msg.angular.z = -self.TURN_SPEED  # Gira a destra
+                else:
+                    msg.angular.z = self.TURN_SPEED   # Gira a sinistra
+                msg.linear.x = 0.0
+                self.get_logger().info(f'Ostacolo rilevato (F:{d_front:.2f}, R:{d_right:.2f}, L:{d_left:.2f}) -> Evito ostacolo', throttle_duration_sec=1.0)
+            else:
+                # Via libera, andiamo dritto!
+                msg.linear.x = self.FWD_SPEED
+                msg.angular.z = 0.02 * math.sin(time.time() * 0.5) # Piccola oscillazione per esplorare meglio
+
         elif self.state == 'TURN':
             if d_front >= self.CLEAR_DIST:
-                self.get_logger().info('Via libera, riprendo il percorso.')
-                self.state = 'FOLLOW_PATH'
+                self.get_logger().info('Via libera, riprendo il cammino.')
+                self.state = 'FOLLOW_PATH' if self.global_path else 'WANDER'
             else:
                 msg.angular.z = self.turn_dir
                 if time.time() - self.turn_start > 4.0:
-                    self.state = 'FOLLOW_PATH' 
+                    self.state = 'FOLLOW_PATH' if self.global_path else 'WANDER'
 
         self.publisher_.publish(msg)
 
