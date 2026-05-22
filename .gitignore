@@ -1,0 +1,28 @@
+# Build, install, and log files
+build/
+install/
+log/
+
+# Python cache and compiled files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDEs and Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ROS 2 maps and scenes generated locally (if any) that are not needed
+# room_explorer/config/mappa_casa.pgm (we deleted this, or want to keep it)
+# We can allow the room_explorer maps/configs if they are required.

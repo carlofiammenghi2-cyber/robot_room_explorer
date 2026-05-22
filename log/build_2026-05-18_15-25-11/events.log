@@ -1,8 +1,0 @@
-[0.000000] (-) TimerEvent: {}
-[0.000080] (-) JobUnselected: {'identifier': 'hw1_usi_turtle'}
-[0.000176] (-) JobUnselected: {'identifier': 'robomaster_description'}
-[0.000235] (-) JobUnselected: {'identifier': 'robomaster_msgs'}
-[0.000336] (room_explorer) JobQueued: {'identifier': 'room_explorer', 'dependencies': OrderedDict([('robomaster_msgs', '/Users/carlofiammenghi/Desktop/2nd_semester/robotics/projects/ros/my_ros2_project/src/install/robomaster_msgs')])}
-[0.000423] (room_explorer) JobStarted: {'identifier': 'room_explorer'}
-[0.006473] (room_explorer) JobEnded: {'identifier': 'room_explorer', 'rc': 1}
-[0.007164] (-) EventReactorShutdown: {}
