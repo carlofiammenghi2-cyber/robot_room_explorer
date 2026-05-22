@@ -2,11 +2,9 @@
 
 This ROS 2 package, `room_explorer`, implements a complete mapping and autonomous navigation pipeline for a Robomaster EP mobile robot equipped with holonomic Mecanum wheels inside the CoppeliaSim simulation environment. 
 
-This repository was developed by **Carlo Fiammenghi** and **Manuel Tagliaferri** for the Robotics Course (USI, A.Y. 2025/26) under the supervision of **Professor Alessandro Giusti**.
-
 ---
 
-## 🛠️ Prerequisites & Installation
+## Prerequisites & Installation
 
 ### 1. Requirements
 * **ROS 2** (Humble Hawksbill or compatible desktop version).
