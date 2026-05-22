@@ -1,11 +1,3 @@
-# USI Robotics: Autonomous Mapping and Navigation Repository
-
-Welcome to the central ROS 2 workspace repository for the **Robotics Course (Università della Svizzera italiana - USI, A.Y. 2025/26)**.
-
-This workspace contains all homework and project implementations developed by **Carlo Fiammenghi** and **Manuel Tagliaferri** under the supervision of **Professor Alessandro Giusti**.
-
----
-
 ## Repository Structure
 
 The workspace is organized into the following ROS 2 packages:
