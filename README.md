@@ -24,6 +24,3 @@ colcon build --symlink-install
 
 # 2. Source the setup script
 source install/setup.zsh
-```
-
-For the step-by-step guide to run the **SLAM Toolbox**, **Nav2**, or **Wander Node**, navigate directly to the project folder or view the instructions in **[src/room_explorer/README.md](src/room_explorer/README.md)**.
