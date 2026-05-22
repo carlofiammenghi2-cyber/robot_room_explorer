@@ -7,8 +7,8 @@ This ROS 2 package, `room_explorer`, implements a complete mapping and autonomou
 ## Prerequisites & Installation
 
 ### 1. Requirements
-* **ROS 2** (Humble Hawksbill or compatible desktop version).
-* **CoppeliaSim** (tested on version 4.X, using the required room scenes).
+* **ROS 2** 
+* **CoppeliaSim**
 * **Nav2 Suite** & **SLAM Toolbox**:
   ```bash
   sudo apt install ros-humble-navigation2 ros-humble-nav2-bringup ros-humble-slam-toolbox
@@ -27,7 +27,7 @@ source install/setup.zsh
 
 ---
 
-## 🚀 Step-by-Step Testing Guide for TAs
+##  Step-by-Step Testing Guide 
 
 Before running any ROS 2 launcher, **open CoppeliaSim** and load the room environment scene:
 * `old_scene.ttt` (for mapping evaluation)
@@ -36,7 +36,7 @@ Make sure to click the **Start Simulation** button in CoppeliaSim.
 
 ---
 
-### Step 1: 🗺️ 2D SLAM Mapping Demonstration
+### Step 1: 2D SLAM Mapping Demonstration
 This launcher starts the coordinate bridges, the LiDAR conversion bridge, the RViz visualizer, and the SLAM toolbox mapping node.
 
 To launch the mapping node, run:
@@ -63,7 +63,7 @@ ros2 run nav2_map_server map_saver_cli -f src/room_explorer/config/mappa_casa
 
 ---
 
-### Step 2: 🎯 Autonomous Navigation (Nav2 Stack)
+### Step 2: Autonomous Navigation (Nav2 Stack)
 This launcher loads a pre-saved static map (`mappa_casa.yaml`), initializes the Costmaps (Global & Local), and starts the AMCL particle-filter localization and Nav2 planning stack.
 
 To launch navigation, run:
@@ -85,7 +85,7 @@ ros2 launch room_explorer ep_nav2.launch.py
 
 ---
 
-### Step 3: 🔄 Reactive Explorer (Wander Mode)
+### Step 3: Reactive Explorer (Wander Mode)
 If you want to test the robot's ability to autonomously explore unknown rooms reactively **without using a map or a localization stack**, you can test our custom reactive wall-follower node.
 
 1. Start CoppeliaSim and the baseline robot sensors launcher:
@@ -104,7 +104,7 @@ If you want to test the robot's ability to autonomously explore unknown rooms re
 
 ---
 
-## 📂 Package Directory Structure
+## Package Directory Structure
 * `launch/`: Contains the launch scripts (`ep_lidar_mapping.launch.py`, `ep_nav2.launch.py`, etc.).
 * `room_explorer/`: Python source code containing:
   * `room_explorer_node.py`: Reactive ToF wander explorer.
