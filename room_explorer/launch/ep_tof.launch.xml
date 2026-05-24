@@ -1,5 +1,5 @@
 <launch>
-  <include file="$(find-pkg-share room_explorer)/launch/main.launch">
+  <include file="$(find-pkg-share robomaster_driver)/launch/main.launch">
     <arg name="model" value="ep"/>
     <arg name="name" value="rm0"/>
 

@@ -15,7 +15,7 @@ import robomaster.conn
 import robomaster.led
 
 
-from room_explorer.ftp import FtpConnection
+from robomaster_driver.ftp import FtpConnection
 
 
 def discover_robots(timeout: float = 3.0) -> Dict[str, str]:

@@ -17,8 +17,8 @@ import robomaster.conn
 import robomaster.client
 
 
-from room_explorer.modules import modules
-from room_explorer.ftp import FtpConnection
+from robomaster_driver.modules import modules
+from robomaster_driver.ftp import FtpConnection
 
 import rclpy
 import rclpy.node
@@ -91,7 +91,7 @@ class RoboMasterROS(rclpy.node.Node):  # type: ignore
     initialized: bool = False
 
     def __init__(self, executor: Optional[rclpy.executors.Executor] = None) -> None:
-        super(RoboMasterROS, self).__init__("room_explorer", start_parameter_services=True)
+        super(RoboMasterROS, self).__init__("robomaster_driver", start_parameter_services=True)
         # robomaster.logger.set_level(logging.ERROR)
         lib_log_level : str = self.declare_parameter("lib_log_level", "ERROR").value.upper()
         robomaster.logger.setLevel(lib_log_level)

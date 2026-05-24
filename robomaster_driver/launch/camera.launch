@@ -6,7 +6,7 @@
 
   <push-ros-namespace namespace="$(var name)"/>
 
-  <node name="robomaster" pkg="room_explorer" exec="robomaster_driver" output="screen" args="--ros-args --log-level info">
+  <node name="robomaster" pkg="robomaster_driver" exec="robomaster_driver" output="screen" args="--ros-args --log-level info">
     <param name="tf_prefix" value="$(var name)"/>
     <param name="serial_number" value="$(var serial_number)"/>
     <param name="conn_type" value="$(var conn_type)"/>

@@ -4,7 +4,7 @@
 
   <push-ros-namespace namespace="$(var name)"/>
 
-  <node name="h264_decoder" pkg="room_explorer" exec="h264_decoder" output="screen" args="--ros-args --log-level info">
+  <node name="h264_decoder" pkg="robomaster_driver" exec="h264_decoder" output="screen" args="--ros-args --log-level info">
     <remap from="image_h264" to="camera/image_h264" />
   </node>
 

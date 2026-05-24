@@ -7,7 +7,7 @@ import rclpy.executors
 import rclpy.logging
 
 
-from room_explorer.client import RoboMasterROS
+from robomaster_driver.client import RoboMasterROS
 
 
 def main(args: Any = None) -> None:
