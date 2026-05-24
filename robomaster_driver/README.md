@@ -6,7 +6,7 @@ To maintain clean modularity and follow ROS 2 architecture principles, the low-l
 
 ---
 
-## 📂 Package Structure
+## Package Structure
 
 * `launch/`: Contains the launch files to start the driver and connection tools on the real robot:
   * `main.launch`: The primary launcher to start the Robomaster driver node and bring up all hardware modules.
@@ -27,7 +27,7 @@ To maintain clean modularity and follow ROS 2 architecture principles, the low-l
 
 ---
 
-## 🚀 How to Run (Real Robot Connection)
+## How to Run (Real Robot Connection)
 
 Ensure your computer is connected to the same WiFi network as the RoboMaster EP (Station Mode) or connected directly to the robot's built-in access point (AP Mode).
 
